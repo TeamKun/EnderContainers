@@ -160,10 +160,19 @@ public class EnderChestListMenu extends AbstractInventoryHolder {
         ItemStack item = this.inventory.getItem(slot);
         if (item == null) return;
 
+        // Calculate the number of enderchests to display in the inventory
+        int min = this.getFirstChestIndex();
+        int max = Files.getConfiguration().getMaxEnderchests();
+
+        int nbForNext = min + PER_PAGE;
+        if (this.page == 1) nbForNext += 2;
+
         // Check for previous/next page
-        if (item.getType() == SKULL_MATERIAL) {
-            if (slot == PER_PAGE) this.page--;
-            else if (slot == PER_PAGE + 1) this.page++;
+        boolean isPrevPage = this.page > 1 && slot == PER_PAGE;
+        boolean isNextPage = nbForNext < max && slot == PER_PAGE + 1;
+        if (isPrevPage || isNextPage) {
+            if (isPrevPage) this.page--;
+            if (isNextPage) this.page++;
 
             this.reloadInventory();
             this.open(player);
