@@ -10,6 +10,7 @@ enderchests:
   onlyShowAccessible: false
   useVanillaEnderchest: true
   numberingEnderchests: true
+  displayFirstSlotItem: true
   forbiddenMaterials:
     - andesite
     - bedrock

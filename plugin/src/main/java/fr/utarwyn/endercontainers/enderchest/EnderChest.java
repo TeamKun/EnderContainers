@@ -3,6 +3,7 @@ package fr.utarwyn.endercontainers.enderchest;
 import fr.utarwyn.endercontainers.configuration.Files;
 import fr.utarwyn.endercontainers.enderchest.context.PlayerContext;
 import fr.utarwyn.endercontainers.inventory.EnderChestInventory;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -117,6 +118,19 @@ public class EnderChest {
      */
     public double getFillPercentage() {
         return (double) this.getSize() / (this.rows * 9);
+    }
+
+    /**
+     * Returns the item in first slot of the chest
+     *
+     * @return item in first slot of the chest
+     */
+    public ItemStack getDisplayItem() {
+        ItemStack itemStack = this.container.getInventory().getItem(0);
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
+            return null;
+        }
+        return itemStack;
     }
 
     /**

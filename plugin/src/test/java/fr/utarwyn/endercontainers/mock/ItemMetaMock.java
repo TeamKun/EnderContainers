@@ -206,7 +206,7 @@ public class ItemMetaMock implements ItemMeta, Damageable {
 
     @Override
     public void addItemFlags(ItemFlag... itemFlags) {
-        throw new UnsupportedOperationException();
+
     }
 
     @Override

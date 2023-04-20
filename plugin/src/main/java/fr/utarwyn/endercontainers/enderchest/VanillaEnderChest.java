@@ -4,9 +4,11 @@ import fr.utarwyn.endercontainers.compatibility.nms.NMSPlayerUtil;
 import fr.utarwyn.endercontainers.enderchest.context.PlayerContext;
 import fr.utarwyn.endercontainers.enderchest.context.PlayerOfflineLoadException;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -72,6 +74,24 @@ public class VanillaEnderChest extends EnderChest {
             return (int) Arrays.stream(inventory.getContents()).filter(Objects::nonNull).count();
         } else {
             return 0;
+        }
+    }
+
+    /**
+     * Returns the item in first slot of the chest
+     *
+     * @return item in first slot of the chest
+     */
+    public ItemStack getDisplayItem() {
+        if (this.owner != null) {
+            Inventory inventory = this.owner.getEnderChest();
+            ItemStack itemStack = inventory.getItem(0);
+            if (itemStack == null || itemStack.getType() == Material.AIR) {
+                return null;
+            }
+            return itemStack;
+        } else {
+            return null;
         }
     }
 

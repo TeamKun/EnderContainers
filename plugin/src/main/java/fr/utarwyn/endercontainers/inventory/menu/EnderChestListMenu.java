@@ -13,6 +13,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -198,12 +199,19 @@ public class EnderChestListMenu extends AbstractInventoryHolder {
         DyeColor dyeColor = ec.isAccessible() ? this.getDyePercentageColor(ec.getFillPercentage()) : DyeColor.BLACK;
         int amount = Files.getConfiguration().isNumberingEnderchests() ? ec.getNum() + 1 : 1;
 
-        ItemStack itemStack;
+        // Display the item in the first slot of the chest if the option is enabled
+        ItemStack itemStack = Files.getConfiguration().isDisplayFirstSlotItem() ? ec.getDisplayItem() : null;
+        boolean useCustomIcon = itemStack != null;
 
-        if (ServerVersion.isNewerThan(ServerVersion.V1_12)) {
-            itemStack = new ItemStack(CompatibilityHelper.searchMaterial(dyeColor.name() + "_STAINED_GLASS_PANE"), amount);
+        if (useCustomIcon) {
+            itemStack = itemStack.clone();
+            itemStack.setAmount(amount);
         } else {
-            itemStack = new ItemStack(CompatibilityHelper.searchMaterial("STAINED_GLASS_PANE"), amount, dyeColor.getWoolData());
+            if (ServerVersion.isNewerThan(ServerVersion.V1_12)) {
+                itemStack = new ItemStack(CompatibilityHelper.searchMaterial(dyeColor.name() + "_STAINED_GLASS_PANE"), amount);
+            } else {
+                itemStack = new ItemStack(CompatibilityHelper.searchMaterial("STAINED_GLASS_PANE"), amount, dyeColor.getWoolData());
+            }
         }
 
         ItemMeta meta = itemStack.getItemMeta();
@@ -222,6 +230,14 @@ public class EnderChestListMenu extends AbstractInventoryHolder {
 
         // Update itemstack metadata
         if (meta != null) {
+            if (useCustomIcon) {
+                // Hide the item details
+                meta.addItemFlags(ItemFlag.values());
+                // If item name is customized, use it in lore
+                if (meta.hasDisplayName()) {
+                    lore.add(0, ChatColor.WHITE + meta.getDisplayName());
+                }
+            }
             meta.setDisplayName(this.formatPaneTitle(ec,
                     Files.getLocale().getMessage(LocaleKey.MENU_PANE_TITLE)));
             meta.setLore(lore);

@@ -31,6 +31,9 @@ enderchests:
   # Number the items in the main menu so that they follow enderchests number
   numberingEnderchests: false
 
+  # Display the first slot item in the main menu
+  displayFirstSlotItem: true
+
   # A list of item materials which are forbidden to store in chests
   # Use Minecraft item IDs displayed ingame (shortcut: F3+H)
   forbiddenMaterials: [ ]

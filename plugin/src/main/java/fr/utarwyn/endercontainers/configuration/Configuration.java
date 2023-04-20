@@ -24,6 +24,7 @@ public class Configuration {
     private final boolean onlyShowAccessibleEnderchests;
     private final boolean useVanillaEnderchest;
     private final boolean numberingEnderchests;
+    private final boolean displayFirstSlotItem;
     private final List<Material> forbiddenMaterials;
 
     private final boolean mysql;
@@ -59,6 +60,7 @@ public class Configuration {
         this.onlyShowAccessibleEnderchests = loadValue("enderchests.onlyShowAccessible", config::isBoolean, config::getBoolean);
         this.useVanillaEnderchest = loadValue("enderchests.useVanillaEnderchest", config::isBoolean, config::getBoolean);
         this.numberingEnderchests = loadValue("enderchests.numberingEnderchests", config::isBoolean, config::getBoolean);
+        this.displayFirstSlotItem = loadValue("enderchests.displayFirstSlotItem", config::isBoolean, config::getBoolean);
         this.forbiddenMaterials = loadValue(
                 "enderchests.forbiddenMaterials",
                 key -> config.isList(key) && config.getStringList(key).stream().allMatch(material -> Material.matchMaterial(material) != null),
@@ -118,6 +120,10 @@ public class Configuration {
 
     public boolean isNumberingEnderchests() {
         return this.numberingEnderchests;
+    }
+
+    public boolean isDisplayFirstSlotItem() {
+        return this.displayFirstSlotItem;
     }
 
     public List<Material> getForbiddenMaterials() {

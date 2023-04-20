@@ -17,9 +17,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -50,6 +49,9 @@ public class EnderChestListMenuTest {
             EnderChest chest = mock(EnderChest.class);
             lenient().when(chest.isAccessible()).thenReturn(true);
             lenient().when(chest.getNum()).thenReturn(number);
+            lenient().when(chest.getDisplayItem()).thenReturn(
+                    number == 1 ? new ItemStack(Material.STONE) : null
+            );
             return chest;
         }).collect(Collectors.toList());
 
@@ -69,6 +71,11 @@ public class EnderChestListMenuTest {
         ItemStack chestItem = this.menu.getInventory().getItem(0);
         assertThat(chestItem).isNotNull();
         assertThat(chestItem.getType()).isEqualTo(Material.LIME_STAINED_GLASS_PANE);
+
+        // check second item
+        ItemStack chestItemDisplay = this.menu.getInventory().getItem(1);
+        assertThat(chestItemDisplay).isNotNull();
+        assertThat(chestItemDisplay.getType()).isEqualTo(Material.STONE);
 
         // check out of bounds item
         assertThat(this.menu.getInventory().getItem(64)).isNull();
